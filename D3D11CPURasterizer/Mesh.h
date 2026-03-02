@@ -1,0 +1,9 @@
+#pragma once
+#include <glm/glm.hpp>
+#include "Vertex.h"
+
+class Mesh {
+public:
+	std::vector<Vertex> vertices;
+	std::vector<int> indices;
+};

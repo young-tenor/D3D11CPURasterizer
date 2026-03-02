@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="D3D11CPURasterizer/D3D11CPURasterizer.vcxproj" Id="bd19d829-aae6-4cb0-a7fe-797ec7c20290" />
+</Solution>
