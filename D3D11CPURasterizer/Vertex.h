@@ -5,5 +5,5 @@ class Vertex {
 public:
 	glm::vec3 pos;
 	glm::vec3 color;
+	glm::vec2 uv;
 };
-

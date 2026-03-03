@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "App.h"
+#include "VertexShader.h"
 #include "PixelShader.h"
 
 bool App::init(HWND h_wnd) {
@@ -132,6 +133,9 @@ bool App::init(HWND h_wnd) {
 		return false;
 	}
 
+	// constant buffer
+	constants.model = glm::mat4(1.0f);
+
 	// GUI
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -203,6 +207,10 @@ void App::draw_indexed(int idx) {
 	const auto &c1 = vertex_buffer[i1].color;
 	const auto &c2 = vertex_buffer[i2].color;
 
+	const auto uv0 = vertex_buffer[i0].uv;
+	const auto uv1 = vertex_buffer[i1].uv;
+	const auto uv2 = vertex_buffer[i2].uv;
+
 	const int min_x = std::min({ v0.x, v1.x, v2.x });
 	const int max_x = std::max({ v0.x, v1.x, v2.x });
 	const int min_y = std::min({ v0.y, v1.y, v2.y });
@@ -212,16 +220,32 @@ void App::draw_indexed(int idx) {
 		for (int j = min_x; j < max_x; j++) {
 			const auto point = glm::vec2((float)j + 0.5f, (float)i + 0.5f);
 
-			const float area0 = edge_function(v1, v2, point);
-			const float area1 = edge_function(v2, v0, point);
-			const float area2 = edge_function(v0, v1, point);
+			float w0 = edge_function(v1, v2, point);
+			float w1 = edge_function(v2, v0, point);
+			float w2 = edge_function(v0, v1, point);
 
-			if (area0 >= 0.0f && area1 >= 0.0f && area2 >= 0.0f) {
-				const float area_sum = area0 + area1 + area2;
-				const auto color = (area0 * c0 + area1 * c1 + area2 * c2) / area_sum;
+			if (w0 >= 0.0f && w1 >= 0.0f && w2 >= 0.0f) {
+				// https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
+				if (perspective && perspective_correction) {
+					float z0 = cam_dist + vertex_buffer[i0].pos.z;
+					float z1 = cam_dist + vertex_buffer[i1].pos.z;
+					float z2 = cam_dist + vertex_buffer[i2].pos.z;
+
+					w0 /= z0;
+					w1 /= z1;
+					w2 /= z2;
+				}
+
+				const float w_sum = w0 + w1 + w2;
+
+				const auto color = (w0 * c0 + w1 * c1 + w2 * c2) / w_sum;
+				const auto uv = (w0 * uv0 + w1 * uv1 + w2 * uv2) / w_sum;
+
 				PSInput ps_input;
 				ps_input.color = color;
-				canvas_data[i * width + j] = ps_main(ps_input);
+				ps_input.uv = uv;
+
+				canvas_data[i * width + j] = pixel_shader(ps_input);
 			}
 		}
 	}

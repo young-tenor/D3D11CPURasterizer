@@ -2,11 +2,14 @@
 #include "HelloTriangle.h"
 #include "Vertex.h"
 #include "VertexShader.h"
+#include "PixelShader.h"
 
 bool HelloTriangle::init(HWND h_wnd) {
 	if (!App::init(h_wnd)) {
 		return false;
 	}
+
+	pixel_shader = ps_color_main;
 
 	triangle = new Mesh();
 

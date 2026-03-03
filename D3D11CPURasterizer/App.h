@@ -2,6 +2,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Vertex.h"
+#include "PixelShader.h"
 #include "Mesh.h"
 
 class App {
@@ -40,9 +41,12 @@ protected:
 	std::vector<Vertex> vertex_buffer;
 	std::vector<int> index_buffer;
 
+	glm::vec4(*pixel_shader)(PSInput &) = nullptr;
+
 	float cam_dist = 1.0f;
 
 	std::vector<Mesh *> meshes;
 
 	bool perspective = false;
+	bool perspective_correction = false;
 };

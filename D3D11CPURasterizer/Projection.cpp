@@ -2,11 +2,14 @@
 #include "Projection.h"
 #include "Vertex.h"
 #include "VertexShader.h"
+#include "PixelShader.h"
 
 bool Projection::init(HWND h_wnd) {
 	if (!App::init(h_wnd)) {
 		return false;
 	}
+
+	pixel_shader = ps_uv_main;
 
 	rect = new Mesh();
 
@@ -21,6 +24,11 @@ bool Projection::init(HWND h_wnd) {
 	v1.color = glm::vec3(1.0f, 0.0f, 0.0f);
 	v2.color = glm::vec3(1.0f, 0.0f, 0.0f);
 	v3.color = glm::vec3(1.0f, 0.0f, 0.0f);
+
+	v0.uv = glm::vec2(0.0f, 0.0f);
+	v1.uv = glm::vec2(1.0f, 0.0f);
+	v2.uv = glm::vec2(1.0f, 1.0f);
+	v3.uv = glm::vec2(0.0f, 1.0f);
 
 	rect->vertices.push_back(v0);
 	rect->vertices.push_back(v1);
@@ -59,6 +67,9 @@ void Projection::update() {
 	if (ImGui::RadioButton("perspective", perspective)) {
 		perspective = true;
 	}
+	ImGui::BeginDisabled(!perspective);
+	ImGui::Checkbox("perspective correction", &perspective_correction);
+	ImGui::EndDisabled();
 
 	ImGui::End();
 
@@ -73,11 +84,13 @@ void Projection::update() {
 			VSInput vs_input;
 			vs_input.pos = mesh->vertices[i].pos;
 			vs_input.color = mesh->vertices[i].color;
+			vs_input.uv = mesh->vertices[i].uv;
 
 			auto vs_output = vs_main(vs_input);
 
 			vertex_buffer[i].pos = vs_output.pos;
 			vertex_buffer[i].color = vs_output.color;
+			vertex_buffer[i].uv = vs_output.uv;
 		}
 
 		index_buffer = mesh->indices;
