@@ -48,6 +48,9 @@
     <ClCompile Include="DepthBuffering.cpp">
       <Filter>Source Files\App</Filter>
     </ClCompile>
+    <ClCompile Include="BlinnPhong.cpp">
+      <Filter>Source Files\App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -76,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="DepthBuffering.h">
       <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="BlinnPhong.h">
+      <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Shader Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

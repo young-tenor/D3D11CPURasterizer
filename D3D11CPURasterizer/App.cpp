@@ -138,6 +138,9 @@ bool App::init(HWND h_wnd) {
 
 	// constant buffer
 	constants.model = glm::mat4(1.0f);
+	constants.invTr = glm::mat4(1.0f);
+	constants.light.pos = glm::vec3(0.0f, 1.0f, -1.0f);
+	constants.light.strength = 1.0f;
 
 	// GUI
 	IMGUI_CHECKVERSION();
@@ -202,34 +205,48 @@ float App::edge_function(const glm::vec2 &v0, const glm::vec2 &v1, const glm::ve
 }
 
 void App::draw_indexed(int idx) {
+	// index
 	const int i0 = index_buffer[idx];
 	const int i1 = index_buffer[idx + 1];
 	const int i2 = index_buffer[idx + 2];
-	
-	const auto v0 = world_to_screen(vertex_buffer[i0].pos);
-	const auto v1 = world_to_screen(vertex_buffer[i1].pos);
-	const auto v2 = world_to_screen(vertex_buffer[i2].pos);
 
+	// world position
+	const auto world0 = vertex_buffer[i0].pos;
+	const auto world1 = vertex_buffer[i1].pos;
+	const auto world2 = vertex_buffer[i2].pos;
+	
+	// screen position
+	const auto screen0 = world_to_screen(world0);
+	const auto screen1 = world_to_screen(world1);
+	const auto screen2 = world_to_screen(world2);
+
+	// color
 	const auto &c0 = vertex_buffer[i0].color;
 	const auto &c1 = vertex_buffer[i1].color;
 	const auto &c2 = vertex_buffer[i2].color;
 
+	// uv
 	const auto uv0 = vertex_buffer[i0].uv;
 	const auto uv1 = vertex_buffer[i1].uv;
 	const auto uv2 = vertex_buffer[i2].uv;
 
-	const int min_x = std::min({ v0.x, v1.x, v2.x });
-	const int max_x = std::max({ v0.x, v1.x, v2.x });
-	const int min_y = std::min({ v0.y, v1.y, v2.y });
-	const int max_y = std::max({ v0.y, v1.y, v2.y });
+	// normal
+	const auto n0 = vertex_buffer[i0].normal;
+	const auto n1 = vertex_buffer[i1].normal;
+	const auto n2 = vertex_buffer[i2].normal;
+
+	const int min_x = std::min({ screen0.x, screen1.x, screen2.x });
+	const int max_x = std::max({ screen0.x, screen1.x, screen2.x });
+	const int min_y = std::min({ screen0.y, screen1.y, screen2.y });
+	const int max_y = std::max({ screen0.y, screen1.y, screen2.y });
 
 	for (int i = min_y; i < max_y; i++) {
 		for (int j = min_x; j < max_x; j++) {
 			const auto point = glm::vec2((float)j + 0.5f, (float)i + 0.5f);
 
-			float w0 = edge_function(v1, v2, point);
-			float w1 = edge_function(v2, v0, point);
-			float w2 = edge_function(v0, v1, point);
+			float w0 = edge_function(screen1, screen2, point);
+			float w1 = edge_function(screen2, screen0, point);
+			float w2 = edge_function(screen0, screen1, point);
 
 			if (w0 >= 0.0f && w1 >= 0.0f && w2 >= 0.0f) {
 				// https://www.comp.nus.edu.sg/~lowkl/publications/lowk_persp_interp_techrep.pdf
@@ -245,12 +262,16 @@ void App::draw_indexed(int idx) {
 
 				const float w_sum = w0 + w1 + w2;
 
+				const auto pos_world = (w0 * world0 + w1 * world1 + w2 * world2) / w_sum;
 				const auto color = (w0 * c0 + w1 * c1 + w2 * c2) / w_sum;
 				const auto uv = (w0 * uv0 + w1 * uv1 + w2 * uv2) / w_sum;
+				const auto normal = glm::normalize((w0 * n0 + w1 * n1 + w2 * n2) / w_sum);
 
 				PSInput ps_input;
+				ps_input.pos_world = pos_world;
 				ps_input.color = color;
 				ps_input.uv = uv;
+				ps_input.normal = normal;
 
 				if (depth_buffering) {
 					const float depth = (w0 * vertex_buffer[i0].pos.z + w1 * vertex_buffer[i1].pos.z + w2 * vertex_buffer[i2].pos.z) / w_sum;
@@ -278,12 +299,14 @@ void App::cpu_render() {
 			vs_input.pos = mesh->vertices[i].pos;
 			vs_input.color = mesh->vertices[i].color;
 			vs_input.uv = mesh->vertices[i].uv;
+			vs_input.normal = mesh->vertices[i].normal;
 
 			auto vs_output = vs_main(vs_input);
 
 			vertex_buffer[i].pos = vs_output.pos;
 			vertex_buffer[i].color = vs_output.color;
 			vertex_buffer[i].uv = vs_output.uv;
+			vertex_buffer[i].normal = vs_output.normal;
 		}
 
 		index_buffer = mesh->indices;
