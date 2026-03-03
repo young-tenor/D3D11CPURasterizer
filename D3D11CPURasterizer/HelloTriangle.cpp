@@ -44,30 +44,4 @@ void HelloTriangle::update() {
 	ImGui::Begin("Hello Triangle");
 
 	ImGui::End();
-
-	std::fill(canvas_data.begin(), canvas_data.end(), glm::vec4(0.1f, 0.2f, 0.4f, 1.0f));
-
-	for (const auto &mesh : meshes) {
-		vertex_buffer.resize(mesh->vertices.size());
-
-		for (int i = 0; i < vertex_buffer.size(); i++) {
-			VSInput vs_input;
-			vs_input.pos = mesh->vertices[i].pos;
-			vs_input.color = mesh->vertices[i].color;
-
-			auto vs_output = vs_main(vs_input);
-
-			vertex_buffer[i].pos = vs_output.pos;
-			vertex_buffer[i].color = vs_output.color;
-		}
-
-		index_buffer = mesh->indices;
-
-		draw_indexed(0);
-	}
-
-	D3D11_MAPPED_SUBRESOURCE resource;
-	context->Map(canvas, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	memcpy(resource.pData, canvas_data.data(), canvas_data.size() * sizeof(glm::vec4));
-	context->Unmap(canvas, 0);
 }

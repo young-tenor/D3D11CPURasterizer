@@ -73,35 +73,4 @@ void DepthBuffering::update() {
 	ImGui::Checkbox("use depth buffer", &depth_buffering);
 
 	ImGui::End();
-
-	std::fill(canvas_data.begin(), canvas_data.end(), glm::vec4(0.1f, 0.2f, 0.4f, 1.0f));
-	std::fill(depth_buffer.begin(), depth_buffer.end(), 10.0f);
-
-	for (const auto &mesh : meshes) {
-		vertex_buffer.resize(mesh->vertices.size());
-
-		for (int i = 0; i < vertex_buffer.size(); i++) {
-			VSInput vs_input;
-			vs_input.pos = mesh->vertices[i].pos;
-			vs_input.color = mesh->vertices[i].color;
-			vs_input.uv = mesh->vertices[i].uv;
-
-			auto vs_output = vs_main(vs_input);
-
-			vertex_buffer[i].pos = vs_output.pos;
-			vertex_buffer[i].color = vs_output.color;
-			vertex_buffer[i].uv = vs_output.uv;
-		}
-
-		index_buffer = mesh->indices;
-
-		for (int i = 0; i < index_buffer.size(); i += 3) {
-			draw_indexed(i);
-		}
-	}
-
-	D3D11_MAPPED_SUBRESOURCE resource;
-	context->Map(canvas, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-	memcpy(resource.pData, canvas_data.data(), canvas_data.size() * sizeof(glm::vec4));
-	context->Unmap(canvas, 0);
 }

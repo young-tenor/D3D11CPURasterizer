@@ -13,10 +13,11 @@ public:
 	virtual void update() = 0;
 	void render();
 
-protected:
+private:
 	glm::vec2 world_to_screen(const glm::vec3 &pos);
 	float edge_function(const glm::vec2 &v0, const glm::vec2 &v1, const glm::vec2 point);
 	void draw_indexed(int i);
+	void cpu_render();
 
 protected:
 	HWND h_wnd = nullptr;
