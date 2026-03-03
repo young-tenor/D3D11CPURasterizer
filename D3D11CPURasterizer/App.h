@@ -40,6 +40,7 @@ protected:
 
 	std::vector<Vertex> vertex_buffer;
 	std::vector<int> index_buffer;
+	std::vector<float> depth_buffer;
 
 	glm::vec4(*pixel_shader)(PSInput &) = nullptr;
 
@@ -49,4 +50,5 @@ protected:
 
 	bool perspective = false;
 	bool perspective_correction = false;
+	bool depth_buffering = false;
 };

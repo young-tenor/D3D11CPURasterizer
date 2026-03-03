@@ -133,6 +133,9 @@ bool App::init(HWND h_wnd) {
 		return false;
 	}
 
+	// depth buffer
+	depth_buffer.resize(width * height);
+
 	// constant buffer
 	constants.model = glm::mat4(1.0f);
 
@@ -247,7 +250,15 @@ void App::draw_indexed(int idx) {
 				ps_input.color = color;
 				ps_input.uv = uv;
 
-				canvas_data[i * width + j] = pixel_shader(ps_input);
+				if (depth_buffering) {
+					const float depth = (w0 * vertex_buffer[i0].pos.z + w1 * vertex_buffer[i1].pos.z + w2 * vertex_buffer[i2].pos.z) / w_sum;
+					if (depth < depth_buffer[i * width + j]) {
+						canvas_data[i * width + j] = pixel_shader(ps_input);
+						depth_buffer[i * width + j] = depth;
+					}
+				} else {
+					canvas_data[i * width + j] = pixel_shader(ps_input);
+				}
 			}
 		}
 	}

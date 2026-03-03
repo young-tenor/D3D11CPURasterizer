@@ -2,6 +2,7 @@
 #include "App.h"
 #include "HelloTriangle.h"
 #include "Projection.h"
+#include "DepthBuffering.h"
 
 HINSTANCE hInst;
 HWND hWnd;
@@ -24,8 +25,9 @@ int main() {
 
 	const auto hello_triangle = new HelloTriangle();
 	const auto projection = new Projection();
+	const auto depth_buffering = new DepthBuffering();
 
-	App *app = projection;
+	App *app = depth_buffering;
 
 	if (!app->init(hWnd)) {
 		std::cout << "init() failed." << std::endl;

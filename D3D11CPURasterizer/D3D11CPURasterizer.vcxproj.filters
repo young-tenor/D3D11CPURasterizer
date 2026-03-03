@@ -45,6 +45,9 @@
     <ClCompile Include="Projection.cpp">
       <Filter>Source Files\App</Filter>
     </ClCompile>
+    <ClCompile Include="DepthBuffering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="Projection.h">
       <Filter>Header Files\App</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthBuffering.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

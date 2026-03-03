@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="D3D11CPURasterizer.cpp" />
+    <ClCompile Include="DepthBuffering.cpp" />
     <ClCompile Include="HelloTriangle.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="pch.cpp">
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="DepthBuffering.h" />
     <ClInclude Include="HelloTriangle.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="pch.h" />
