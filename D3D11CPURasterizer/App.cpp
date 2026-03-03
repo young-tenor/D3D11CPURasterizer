@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "App.h"
-#include "Vertex.h"
 #include "PixelShader.h"
 
 bool App::init(HWND h_wnd) {
@@ -172,8 +171,16 @@ void App::render() {
 
 // [-1, 1] * [-1, 1] -> [0, width - 1] * [0, height - 1]
 glm::vec2 App::world_to_screen(const glm::vec3 &pos) {
-	float x = pos.x * (width - 1.0f) / 2.0f + (width - 1.0f) / 2.0f;
-	float y = -pos.y * (height - 1.0f) / 2.0f + (height - 1.0f) / 2.0f;
+	float x, y;
+	if (perspective) {
+		x = pos.x * cam_dist / (cam_dist + pos.z);
+		y = pos.y * cam_dist / (cam_dist + pos.z);
+	} else {
+		x = pos.x;
+		y = pos.y;
+	}
+	x = x * (width - 1.0f) / 2.0f + (width - 1.0f) / 2.0f;
+	y = -y * (height - 1.0f) / 2.0f + (height - 1.0f) / 2.0f;
 	return glm::vec2(x, y);
 }
 

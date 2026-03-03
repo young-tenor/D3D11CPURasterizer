@@ -1,6 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 
+inline struct Constants {
+	glm::mat4 model;
+} constants;
+
 struct VSInput {
 	glm::vec3 pos;
 	glm::vec3 color;
@@ -11,9 +15,9 @@ struct VSOutput {
 	glm::vec3 color;
 };
 
-VSOutput vs_main(VSInput &input) {
+inline VSOutput vs_main(VSInput &input) {
 	VSOutput output;
-	output.pos = input.pos;
+	output.pos = constants.model * glm::vec4(input.pos, 1.0f);
 	output.color = input.color;
 	return output;
 }

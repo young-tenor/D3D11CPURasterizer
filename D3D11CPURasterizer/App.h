@@ -40,5 +40,9 @@ protected:
 	std::vector<Vertex> vertex_buffer;
 	std::vector<int> index_buffer;
 
+	float cam_dist = 1.0f;
+
 	std::vector<Mesh *> meshes;
+
+	bool perspective = false;
 };

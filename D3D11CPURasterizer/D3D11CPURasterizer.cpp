@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "App.h"
 #include "HelloTriangle.h"
+#include "Projection.h"
 
 HINSTANCE hInst;
 HWND hWnd;
@@ -22,8 +23,9 @@ int main() {
 	}
 
 	const auto hello_triangle = new HelloTriangle();
+	const auto projection = new Projection();
 
-	App *app = hello_triangle;
+	App *app = projection;
 
 	if (!app->init(hWnd)) {
 		std::cout << "init() failed." << std::endl;
