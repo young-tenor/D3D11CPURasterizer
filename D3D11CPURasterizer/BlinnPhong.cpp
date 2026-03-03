@@ -161,6 +161,7 @@ void BlinnPhong::update() {
 
 	ImGui::Begin("Blinn-Phong");
 
+	ImGui::Text("transform");
 	ImGui::SliderFloat("yaw", &yaw, -180.0f, 180.0f);
 	ImGui::SliderFloat("pitch", &pitch, -180.0f, 180.0f);
 

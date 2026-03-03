@@ -288,7 +288,7 @@ void App::draw_indexed(int idx) {
 }
 
 void App::cpu_render() {
-	std::fill(canvas_data.begin(), canvas_data.end(), glm::vec4(0.1f, 0.2f, 0.4f, 1.0f));
+	std::fill(canvas_data.begin(), canvas_data.end(), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	std::fill(depth_buffer.begin(), depth_buffer.end(), 10.0f);
 
 	for (const auto &mesh : meshes) {
