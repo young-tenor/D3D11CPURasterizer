@@ -173,19 +173,21 @@ void App::render() {
 	swap_chain->Present(1, 0);
 }
 
-// [-1, 1] * [-1, 1] -> [0, width - 1] * [0, height - 1]
+// [-aspect, aspect] * [-1, 1] -> [-1, 1] * [-1, 1] -> [0, width - 1] * [0, height - 1]
 glm::vec2 App::world_to_screen(const glm::vec3 &pos) {
-	float x, y;
+	// world to ndc
+	auto pos_ndc = glm::vec2(pos.x / aspect, pos.y);
 	if (perspective) {
-		x = pos.x * cam_dist / (cam_dist + pos.z);
-		y = pos.y * cam_dist / (cam_dist + pos.z);
-	} else {
-		x = pos.x;
-		y = pos.y;
+		pos_ndc = pos_ndc * cam_dist / (cam_dist + pos.z);
 	}
-	x = x * (width - 1.0f) / 2.0f + (width - 1.0f) / 2.0f;
-	y = -y * (height - 1.0f) / 2.0f + (height - 1.0f) / 2.0f;
-	return glm::vec2(x, y);
+
+	// ndc to screen
+	auto pos_screen = pos_ndc;
+	const float x_half = (width - 1.0f) * 0.5f;
+	const float y_half = (height - 1.0f) * 0.5f;
+	pos_screen = pos_screen * glm::vec2(x_half, -y_half) + glm::vec2(x_half, y_half);
+
+	return pos_screen;
 }
 
 float App::edge_function(const glm::vec2 &v0, const glm::vec2 &v1, const glm::vec2 point) {
