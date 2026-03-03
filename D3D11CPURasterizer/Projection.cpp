@@ -48,15 +48,15 @@ void Projection::update() {
 	ImGui::Begin("Perspective Projection");
 
 	ImGui::Text("transform");
-	ImGui::SliderFloat("Rotation Y", &yaw, -90.0f, 90.0f);
+	ImGui::SliderFloat("yaw", &yaw, -90.0f, 90.0f);
 
 	ImGui::Separator();
 
 	ImGui::Text("projection");
-	if (ImGui::RadioButton("Orthographic", !perspective)) {
+	if (ImGui::RadioButton("orthographic", !perspective)) {
 		perspective = false;
 	}
-	if (ImGui::RadioButton("Perspective", perspective)) {
+	if (ImGui::RadioButton("perspective", perspective)) {
 		perspective = true;
 	}
 
