@@ -88,10 +88,10 @@ bool App::init(HWND h_wnd) {
 		return false;
 	}
 
-	// texture
 	hr = device->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), nullptr, &ps);
 	ps_blob->Release();
 
+	// texture
 	D3D11_TEXTURE2D_DESC texture_desc = { 0 };
 	texture_desc.Width = width;
 	texture_desc.Height = height;
