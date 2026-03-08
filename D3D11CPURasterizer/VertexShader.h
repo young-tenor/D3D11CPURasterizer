@@ -16,7 +16,7 @@ struct VSOutput {
 	glm::vec3 normal;
 };
 
-inline VSOutput vs_main(VSInput &input) {
+inline VSOutput VSMain(VSInput &input) {
 	VSOutput output;
 	output.pos = constants.model * glm::vec4(input.pos, 1.0f);
 	output.color = input.color;

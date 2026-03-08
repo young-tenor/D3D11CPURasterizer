@@ -4,16 +4,16 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 
-bool BlinnPhong::init(HWND h_wnd) {
-	if (!App::init(h_wnd)) {
+bool BlinnPhong::Init(HWND hWnd) {
+	if (!App::Init(hWnd)) {
 		return false;
 	}
 
 	perspective = true;
-	perspective_correction = true;
-	depth_buffering = true;
+	perspectiveCorrection = true;
+	depthBuffering = true;
 
-	pixel_shader = ps_blinn_phong_main;
+	pixelShader = PSBlinnPhongMain;
 
 	cube = new Mesh();
 
@@ -154,7 +154,7 @@ bool BlinnPhong::init(HWND h_wnd) {
 	return true;
 }
 
-void BlinnPhong::update() {
+void BlinnPhong::Update() {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();

@@ -24,14 +24,14 @@ int main() {
 		return -1;
 	}
 
-	const auto hello_triangle = new HelloTriangle();
+	const auto helloTriangle = new HelloTriangle();
 	const auto projection = new Projection();
-	const auto depth_buffering = new DepthBuffering();
-	const auto blinn_phong = new BlinnPhong();
+	const auto depthBuffering = new DepthBuffering();
+	const auto blinnPhong = new BlinnPhong();
 
-	App *app = blinn_phong;
+	App *app = blinnPhong;
 
-	if (!app->init(hWnd)) {
+	if (!app->Init(hWnd)) {
 		std::cout << "init() failed." << std::endl;
 		return -1;
 	}
@@ -42,8 +42,8 @@ int main() {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		} else {
-			app->update();
-			app->render();
+			app->Update();
+			app->Render();
 		}
 	}
 

@@ -4,12 +4,12 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 
-bool Projection::init(HWND h_wnd) {
-	if (!App::init(h_wnd)) {
+bool Projection::Init(HWND hWnd) {
+	if (!App::Init(hWnd)) {
 		return false;
 	}
 
-	pixel_shader = ps_uv_main;
+	pixelShader = PSUVMain;
 
 	rect = new Mesh();
 
@@ -48,7 +48,7 @@ bool Projection::init(HWND h_wnd) {
 	return true;
 }
 
-void Projection::update() {
+void Projection::Update() {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
@@ -68,12 +68,12 @@ void Projection::update() {
 		perspective = true;
 	}
 	ImGui::BeginDisabled(!perspective);
-	ImGui::Checkbox("perspective correction", &perspective_correction);
+	ImGui::Checkbox("perspective correction", &perspectiveCorrection);
 	ImGui::EndDisabled();
 
 	ImGui::End();
 
-	std::fill(canvas_data.begin(), canvas_data.end(), glm::vec4(0.1f, 0.2f, 0.4f, 1.0f));
+	std::fill(canvasData.begin(), canvasData.end(), glm::vec4(0.1f, 0.2f, 0.4f, 1.0f));
 
 	constants.model = glm::rotate(glm::radians(yaw), glm::vec3(0.0f, 1.0f, 0.0f));
 }

@@ -4,12 +4,12 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 
-bool HelloTriangle::init(HWND h_wnd) {
-	if (!App::init(h_wnd)) {
+bool HelloTriangle::Init(HWND hWnd) {
+	if (!App::Init(hWnd)) {
 		return false;
 	}
 
-	pixel_shader = ps_color_main;
+	pixelShader = PSColorMain;
 
 	triangle = new Mesh();
 
@@ -36,7 +36,7 @@ bool HelloTriangle::init(HWND h_wnd) {
 	return true;
 }
 
-void HelloTriangle::update() {
+void HelloTriangle::Update() {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();

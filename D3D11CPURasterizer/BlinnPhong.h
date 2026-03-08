@@ -6,8 +6,8 @@ class BlinnPhong : public App {
 public:
 	~BlinnPhong() override = default;
 
-	bool init(HWND h_wnd) override;
-	void update() override;
+	bool Init(HWND hWnd) override;
+	void Update() override;
 
 private:
 	Mesh *cube = nullptr;

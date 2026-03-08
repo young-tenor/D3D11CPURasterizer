@@ -9,25 +9,25 @@ class App {
 public:
 	virtual ~App() = default;
 
-	virtual bool init(HWND h_wnd);
-	virtual void update() = 0;
-	void render();
+	virtual bool Init(HWND hWnd);
+	virtual void Update() = 0;
+	void Render();
 
 private:
-	glm::vec2 world_to_screen(const glm::vec3 &pos);
-	float edge_function(const glm::vec2 &v0, const glm::vec2 &v1, const glm::vec2 point);
-	void draw_indexed(int i);
-	void cpu_render();
+	glm::vec2 WorldToScreen(const glm::vec3 &pos);
+	float EdgeFunction(const glm::vec2 &v0, const glm::vec2 &v1, const glm::vec2 point);
+	void DrawIndexed(int i);
+	void CPURender();
 
 protected:
-	HWND h_wnd = nullptr;
+	HWND hWnd = nullptr;
 	float width = 1280.0f;
 	float height = 720.0f;
 	float aspect = 1280.0f / 720.0f;
 
 	ID3D11Device *device = nullptr;
 	ID3D11DeviceContext *context = nullptr;
-	IDXGISwapChain *swap_chain = nullptr;
+	IDXGISwapChain *swapChain = nullptr;
 	ID3D11RenderTargetView *rtv = nullptr;
 	D3D11_VIEWPORT viewport = { 0 };
 
@@ -35,21 +35,21 @@ protected:
 	ID3D11PixelShader *ps = nullptr;
 
 	ID3D11Texture2D *canvas = nullptr;
-	ID3D11ShaderResourceView *canvas_srv = nullptr;
-	std::vector<glm::vec4> canvas_data;
+	ID3D11ShaderResourceView *canvasSrv = nullptr;
+	std::vector<glm::vec4> canvasData;
 	ID3D11SamplerState *sampler = nullptr;
 
-	std::vector<Vertex> vertex_buffer;
-	std::vector<int> index_buffer;
-	std::vector<float> depth_buffer;
+	std::vector<Vertex> vertexBuffer;
+	std::vector<int> indexBuffer;
+	std::vector<float> depthBuffer;
 
-	glm::vec4(*pixel_shader)(PSInput &) = nullptr;
+	glm::vec4(*pixelShader)(PSInput &) = nullptr;
 
-	float cam_dist = 1.0f;
+	float camDist = 1.0f;
 
 	std::vector<Mesh *> meshes;
 
 	bool perspective = false;
-	bool perspective_correction = false;
-	bool depth_buffering = false;
+	bool perspectiveCorrection = false;
+	bool depthBuffering = false;
 };

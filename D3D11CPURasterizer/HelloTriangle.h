@@ -6,8 +6,8 @@ class HelloTriangle : public App {
 public:
 	~HelloTriangle() override = default;
 
-	bool init(HWND h_wnd) override;
-	void update() override;
+	bool Init(HWND hWnd) override;
+	void Update() override;
 
 private:
 	Mesh *triangle = nullptr;

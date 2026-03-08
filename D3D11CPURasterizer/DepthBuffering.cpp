@@ -4,15 +4,15 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 
-bool DepthBuffering::init(HWND h_wnd) {
-	if (!App::init(h_wnd)) {
+bool DepthBuffering::Init(HWND hWnd) {
+	if (!App::Init(hWnd)) {
 		return false;
 	}
 
 	perspective = true;
-	perspective_correction = true;
+	perspectiveCorrection = true;
 
-	pixel_shader = ps_color_main;
+	pixelShader = PSColorMain;
 
 	front = new Mesh();
 	{
@@ -63,14 +63,14 @@ bool DepthBuffering::init(HWND h_wnd) {
 	return true;
 }
 
-void DepthBuffering::update() {
+void DepthBuffering::Update() {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
 	ImGui::Begin("Depth Buffer");
 
-	ImGui::Checkbox("use depth buffer", &depth_buffering);
+	ImGui::Checkbox("use depth buffer", &depthBuffering);
 
 	ImGui::End();
 }
