@@ -9,8 +9,8 @@ struct PSInput {
 	glm::vec3 normal;
 };
 
-inline glm::vec3 ShadeBlinnPhong(const glm::vec3 &normal, const glm::vec3 &lightVec, const glm::vec3 &camDir) {
-	const auto halfway = glm::normalize(lightVec + camDir);
+inline glm::vec3 ShadeBlinnPhong(const glm::vec3 &normal, const glm::vec3 &lightVec, const glm::vec3 &toEye) {
+	const auto halfway = glm::normalize(lightVec + toEye);
 
 	const auto diffuse = glm::max(glm::dot(normal, lightVec), 0.0f) * constants.mat.diffuse;
 	const auto specular = glm::pow(glm::max(glm::dot(halfway, normal), 0.0f), constants.mat.shininess) * constants.mat.specular;
@@ -32,7 +32,7 @@ inline glm::vec4 PSUVMain(PSInput &input) {
 inline glm::vec4 PSBlinnPhongMain(PSInput &input) {
 	const auto lightVec = glm::normalize(constants.light.pos - input.posWolrd);
 	const auto camPos = glm::vec3(0.0f, 0.0f, -1.0f);
-	const auto camVec = glm::normalize(camPos - input.posWolrd);
-	const auto color = ShadeBlinnPhong(input.normal, lightVec, camVec);
+	const auto toEye = glm::normalize(camPos - input.posWolrd);
+	const auto color = ShadeBlinnPhong(input.normal, lightVec, toEye);
 	return glm::vec4(color, 1.0f);
 }
